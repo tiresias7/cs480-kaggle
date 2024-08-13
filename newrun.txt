@@ -1,0 +1,933 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       464.94 GB / 503.72 GB (92.3%)
+Disk Space Avail:   114.85 GB / 1758.32 GB (6.5%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X4_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X4_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    475929.24 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	13.6s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 14.32s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.537	 = Validation score   (r2)
+	2.87s	 = Training   runtime
+	1.66s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.5439	 = Validation score   (r2)
+	3.11s	 = Training   runtime
+	1.9s	 = Validation runtime
+Fitting model: LightGBMXT ...
+	0.536	 = Validation score   (r2)
+	692.12s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.5256	 = Validation score   (r2)
+	695.09s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.4449	 = Validation score   (r2)
+	864.87s	 = Training   runtime
+	0.24s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.534	 = Validation score   (r2)
+	1235.07s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.4462	 = Validation score   (r2)
+	672.19s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.5212	 = Validation score   (r2)
+	726.68s	 = Training   runtime
+	0.26s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.5046	 = Validation score   (r2)
+	1337.26s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.5273	 = Validation score   (r2)
+	210.95s	 = Training   runtime
+	0.66s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.519	 = Validation score   (r2)
+	1797.78s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'KNeighborsDist': 0.368, 'NeuralNetTorch': 0.263, 'NeuralNetFastAI': 0.211, 'LightGBMXT': 0.105, 'LightGBM': 0.053}
+	0.6029	 = Validation score   (r2)
+	0.08s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 8264.03s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 817.0 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X4_mean")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       462.22 GB / 503.72 GB (91.8%)
+Disk Space Avail:   112.82 GB / 1758.32 GB (6.4%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X11_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X11_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    473159.50 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	14.5s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 15.33s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.4656	 = Validation score   (r2)
+	3.76s	 = Training   runtime
+	1.41s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.4748	 = Validation score   (r2)
+	2.74s	 = Training   runtime
+	1.41s	 = Validation runtime
+Fitting model: LightGBMXT ...
+	0.4859	 = Validation score   (r2)
+	498.05s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.4731	 = Validation score   (r2)
+	464.01s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.3982	 = Validation score   (r2)
+	879.19s	 = Training   runtime
+	0.16s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.4814	 = Validation score   (r2)
+	741.5s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.3948	 = Validation score   (r2)
+	633.45s	 = Training   runtime
+	0.16s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.4864	 = Validation score   (r2)
+	807.83s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.462	 = Validation score   (r2)
+	2220.63s	 = Training   runtime
+	0.27s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.4665	 = Validation score   (r2)
+	73.35s	 = Training   runtime
+	0.96s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.4703	 = Validation score   (r2)
+	1168.2s	 = Training   runtime
+	0.27s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'NeuralNetFastAI': 0.36, 'KNeighborsDist': 0.32, 'LightGBMXT': 0.16, 'NeuralNetTorch': 0.08, 'CatBoost': 0.04, 'XGBoost': 0.04}
+	0.5434	 = Validation score   (r2)
+	0.08s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 7518.62s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 846.6 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X11_mean")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       461.90 GB / 503.72 GB (91.7%)
+Disk Space Avail:   107.22 GB / 1758.32 GB (6.1%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X18_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X18_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    473656.53 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	14.4s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 14.94s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.6105	 = Validation score   (r2)
+	3.74s	 = Training   runtime
+	1.22s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.6145	 = Validation score   (r2)
+	2.84s	 = Training   runtime
+	1.21s	 = Validation runtime
+Fitting model: LightGBMXT ...
+	0.6608	 = Validation score   (r2)
+	394.65s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.649	 = Validation score   (r2)
+	294.93s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.5945	 = Validation score   (r2)
+	1561.71s	 = Training   runtime
+	0.17s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.6683	 = Validation score   (r2)
+	735.06s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.6024	 = Validation score   (r2)
+	1032.97s	 = Training   runtime
+	0.18s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.6606	 = Validation score   (r2)
+	1802.36s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.6403	 = Validation score   (r2)
+	310.77s	 = Training   runtime
+	0.18s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.6453	 = Validation score   (r2)
+	99.33s	 = Training   runtime
+	0.53s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.6495	 = Validation score   (r2)
+	1767.53s	 = Training   runtime
+	0.19s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'NeuralNetFastAI': 0.36, 'CatBoost': 0.32, 'KNeighborsDist': 0.16, 'NeuralNetTorch': 0.12, 'LightGBMXT': 0.04}
+	0.6985	 = Validation score   (r2)
+	0.07s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 8029.73s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 1217.8 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X18_mean")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       462.43 GB / 503.72 GB (91.8%)
+Disk Space Avail:   101.65 GB / 1758.32 GB (5.8%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X50_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X50_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    473344.08 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	13.7s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 14.32s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.395	 = Validation score   (r2)
+	2.66s	 = Training   runtime
+	1.05s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.4054	 = Validation score   (r2)
+	2.67s	 = Training   runtime
+	1.14s	 = Validation runtime
+Fitting model: LightGBMXT ...
+	0.4128	 = Validation score   (r2)
+	289.28s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.3981	 = Validation score   (r2)
+	325.54s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.3121	 = Validation score   (r2)
+	944.89s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.4076	 = Validation score   (r2)
+	766.0s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.3197	 = Validation score   (r2)
+	664.84s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.3989	 = Validation score   (r2)
+	1003.3s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.3852	 = Validation score   (r2)
+	2016.2s	 = Training   runtime
+	0.23s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.3896	 = Validation score   (r2)
+	135.49s	 = Training   runtime
+	0.55s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.4001	 = Validation score   (r2)
+	2017.57s	 = Training   runtime
+	0.28s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'KNeighborsDist': 0.333, 'NeuralNetFastAI': 0.238, 'NeuralNetTorch': 0.238, 'LightGBMXT': 0.143, 'XGBoost': 0.048}
+	0.4858	 = Validation score   (r2)
+	0.08s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 8191.84s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 1162.7 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X50_mean")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       444.24 GB / 503.72 GB (88.2%)
+Disk Space Avail:   95.56 GB / 1758.32 GB (5.4%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X26_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X26_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    455437.16 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	31.8s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 32.58s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.289	 = Validation score   (r2)
+	4.08s	 = Training   runtime
+	1.26s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.3048	 = Validation score   (r2)
+	4.11s	 = Training   runtime
+	1.31s	 = Validation runtime
+Fitting model: LightGBMXT ...
+	0.3726	 = Validation score   (r2)
+	91.45s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.3352	 = Validation score   (r2)
+	32.2s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.2709	 = Validation score   (r2)
+	3651.99s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.3312	 = Validation score   (r2)
+	217.75s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.2805	 = Validation score   (r2)
+	1638.68s	 = Training   runtime
+	0.18s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.3375	 = Validation score   (r2)
+	899.31s	 = Training   runtime
+	1.53s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.3071	 = Validation score   (r2)
+	4206.17s	 = Training   runtime
+	0.23s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.4145	 = Validation score   (r2)
+	116.91s	 = Training   runtime
+	0.5s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.3569	 = Validation score   (r2)
+	2047.72s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'NeuralNetTorch': 0.583, 'KNeighborsDist': 0.25, 'LightGBMXT': 0.167}
+	0.4477	 = Validation score   (r2)
+	0.07s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 12953.11s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 1337.9 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X26_mean")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.1.1
+Python Version:     3.10.14
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #36-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun 10 10:49:14 UTC 2024
+CPU Count:          64
+Memory Avail:       456.58 GB / 503.72 GB (90.6%)
+Disk Space Avail:   89.26 GB / 1758.32 GB (5.1%)
+===================================================
+No presets specified! To achieve strong results with AutoGluon, it is recommended to use the available presets.
+	Recommended Presets (For more details refer to https://auto.gluon.ai/stable/tutorials/tabular/tabular-essentials.html#presets):
+	presets='best_quality'   : Maximize accuracy. Default time_limit=3600.
+	presets='high_quality'   : Strong accuracy with fast inference speed. Default time_limit=3600.
+	presets='good_quality'   : Good accuracy with very fast inference speed. Default time_limit=3600.
+	presets='medium_quality' : Fast training time, ideal for initial prototyping.
+Warning: Training may take a very long time because `time_limit` was not specified and `train_data` is large (39026 samples, 797.29 MB).
+	Consider setting `time_limit` to ensure training finishes within an expected duration or experiment with a small portion of `train_data` to identify an ideal `presets` and `hyperparameters` configuration.
+Beginning AutoGluon training ...
+AutoGluon will save models to "./DinoV2-with-AutoTabular-X3112_mean"
+Train Data Rows:    39026
+Train Data Columns: 2537
+Label Column:       X3112_mean
+Problem Type:       regression
+Preprocessing data ...
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    467236.22 MB
+	Train Data (Original)  Memory Usage: 760.06 MB (0.2% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+		Fitting TextSpecialFeatureGenerator...
+			Fitting BinnedFeatureGenerator...
+			Fitting DropDuplicatesFeatureGenerator...
+		Fitting TextNgramFeatureGenerator...
+			Fitting CountVectorizer for text features: ['emb']
+			CountVectorizer fit with vocabulary size = 5
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])        : 2536 | ['0', '1', '2', '3', '4', ...]
+		('object', ['text']) :    1 | ['emb']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', ['text_as_category'])  :    1 | ['emb']
+		('float', [])                       : 2536 | ['0', '1', '2', '3', '4', ...]
+		('int', ['binned', 'text_special']) :   10 | ['emb.char_count', 'emb.word_count', 'emb.lower_ratio', 'emb.digit_ratio', 'emb.special_ratio', ...]
+		('int', ['text_ngram'])             :    6 | ['__nlp__.00', '__nlp__.01', '__nlp__.02', '__nlp__.03', '__nlp__.04', ...]
+	12.2s = Fit runtime
+	2537 features in original data used to generate 2553 features in processed data.
+	Train Data (Processed) Memory Usage: 755.94 MB (0.2% of available memory)
+Data preprocessing and feature engineering runtime = 12.96s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'r2'
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.06405985753087685, Train Rows: 36526, Val Rows: 2500
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': {},
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, 'GBMLarge'],
+	'CAT': {},
+	'XGB': {},
+	'FASTAI': {},
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'KNN': [{'weights': 'uniform', 'ag_args': {'name_suffix': 'Unif'}}, {'weights': 'distance', 'ag_args': {'name_suffix': 'Dist'}}],
+}
+Fitting 11 L1 models ...
+Fitting model: KNeighborsUnif ...
+	0.4243	 = Validation score   (r2)
+	2.83s	 = Training   runtime
+	1.01s	 = Validation runtime
+Fitting model: KNeighborsDist ...
+	0.4307	 = Validation score   (r2)
+	2.71s	 = Training   runtime
+	1.03s	 = Validation runtime
+Fitting model: LightGBMXT ...
+Training model for X4_mean using AutoGluon...
+[1000]	valid_set's l2: 0.00896215	valid_set's r2: 0.510112
+[2000]	valid_set's l2: 0.00871087	valid_set's r2: 0.523847
+[3000]	valid_set's l2: 0.00862618	valid_set's r2: 0.528477
+[4000]	valid_set's l2: 0.00857737	valid_set's r2: 0.531145
+[5000]	valid_set's l2: 0.00853525	valid_set's r2: 0.533447
+[6000]	valid_set's l2: 0.00851444	valid_set's r2: 0.534585
+[7000]	valid_set's l2: 0.0085062	valid_set's r2: 0.535035
+[8000]	valid_set's l2: 0.0084964	valid_set's r2: 0.535571
+[9000]	valid_set's l2: 0.00849223	valid_set's r2: 0.535798
+[10000]	valid_set's l2: 0.0084877	valid_set's r2: 0.536046
+[1000]	valid_set's l2: 0.00909277	valid_set's r2: 0.502972
+[2000]	valid_set's l2: 0.00884271	valid_set's r2: 0.516641
+[3000]	valid_set's l2: 0.00874425	valid_set's r2: 0.522023
+[4000]	valid_set's l2: 0.00870739	valid_set's r2: 0.524038
+[5000]	valid_set's l2: 0.00869908	valid_set's r2: 0.524492
+[6000]	valid_set's l2: 0.00868987	valid_set's r2: 0.524995
+[7000]	valid_set's l2: 0.00868356	valid_set's r2: 0.52534
+[8000]	valid_set's l2: 0.00868092	valid_set's r2: 0.525485
+[9000]	valid_set's l2: 0.00868054	valid_set's r2: 0.525505
+[10000]	valid_set's l2: 0.00867955	valid_set's r2: 0.525559
+[1000]	valid_set's l2: 0.00889495	valid_set's r2: 0.513785
+[2000]	valid_set's l2: 0.0088162	valid_set's r2: 0.51809
+[3000]	valid_set's l2: 0.00880306	valid_set's r2: 0.518808
+[4000]	valid_set's l2: 0.0088012	valid_set's r2: 0.51891
+[5000]	valid_set's l2: 0.00880046	valid_set's r2: 0.51895
+[6000]	valid_set's l2: 0.00880031	valid_set's r2: 0.518958
+[7000]	valid_set's l2: 0.00880028	valid_set's r2: 0.51896
+[8000]	valid_set's l2: 0.00880027	valid_set's r2: 0.518961
+[9000]	valid_set's l2: 0.00880027	valid_set's r2: 0.518961
+[10000]	valid_set's l2: 0.00880027	valid_set's r2: 0.518961
+R2 score for X4_mean: 0.6110
+Training model for X11_mean using AutoGluon...
+[1000]	valid_set's l2: 26.4112	valid_set's r2: 0.457852
+[2000]	valid_set's l2: 25.6636	valid_set's r2: 0.4732
+[3000]	valid_set's l2: 25.3807	valid_set's r2: 0.479007
+[4000]	valid_set's l2: 25.2212	valid_set's r2: 0.482281
+[5000]	valid_set's l2: 25.127	valid_set's r2: 0.484213
+[6000]	valid_set's l2: 25.098	valid_set's r2: 0.48481
+[7000]	valid_set's l2: 25.0772	valid_set's r2: 0.485235
+[8000]	valid_set's l2: 25.0577	valid_set's r2: 0.485636
+[9000]	valid_set's l2: 25.0458	valid_set's r2: 0.48588
+[10000]	valid_set's l2: 25.0438	valid_set's r2: 0.485921
+[1000]	valid_set's l2: 26.7313	valid_set's r2: 0.451283
+[2000]	valid_set's l2: 26.0572	valid_set's r2: 0.465119
+[3000]	valid_set's l2: 25.8091	valid_set's r2: 0.470212
+[4000]	valid_set's l2: 25.7486	valid_set's r2: 0.471455
+[5000]	valid_set's l2: 25.7102	valid_set's r2: 0.472243
+[6000]	valid_set's l2: 25.687	valid_set's r2: 0.472719
+[7000]	valid_set's l2: 25.6778	valid_set's r2: 0.472908
+[8000]	valid_set's l2: 25.6705	valid_set's r2: 0.473057
+[9000]	valid_set's l2: 25.6677	valid_set's r2: 0.473115
+[10000]	valid_set's l2: 25.6665	valid_set's r2: 0.47314
+[1000]	valid_set's l2: 26.0111	valid_set's r2: 0.466066
+[2000]	valid_set's l2: 25.8584	valid_set's r2: 0.4692
+[3000]	valid_set's l2: 25.8165	valid_set's r2: 0.47006
+[4000]	valid_set's l2: 25.8098	valid_set's r2: 0.470198
+[5000]	valid_set's l2: 25.8078	valid_set's r2: 0.470238
+[6000]	valid_set's l2: 25.8074	valid_set's r2: 0.470248
+[7000]	valid_set's l2: 25.8072	valid_set's r2: 0.47025
+[8000]	valid_set's l2: 25.8072	valid_set's r2: 0.470251
+[9000]	valid_set's l2: 25.8072	valid_set's r2: 0.470251
+[10000]	valid_set's l2: 25.8072	valid_set's r2: 0.470251
+R2 score for X11_mean: 0.5633
+Training model for X18_mean using AutoGluon...
+[1000]	valid_set's l2: 6.23873	valid_set's r2: 0.653742
+[2000]	valid_set's l2: 6.14854	valid_set's r2: 0.658748
+[3000]	valid_set's l2: 6.13215	valid_set's r2: 0.659657
+[4000]	valid_set's l2: 6.13278	valid_set's r2: 0.659622
+[5000]	valid_set's l2: 6.12192	valid_set's r2: 0.660225
+[6000]	valid_set's l2: 6.11815	valid_set's r2: 0.660435
+[7000]	valid_set's l2: 6.11516	valid_set's r2: 0.660601
+[8000]	valid_set's l2: 6.11427	valid_set's r2: 0.66065
+[9000]	valid_set's l2: 6.11265	valid_set's r2: 0.66074
+[10000]	valid_set's l2: 6.11226	valid_set's r2: 0.660762
+[1000]	valid_set's l2: 6.43756	valid_set's r2: 0.642707
+[2000]	valid_set's l2: 6.35257	valid_set's r2: 0.647424
+[3000]	valid_set's l2: 6.3328	valid_set's r2: 0.648521
+[4000]	valid_set's l2: 6.32447	valid_set's r2: 0.648983
+[5000]	valid_set's l2: 6.32553	valid_set's r2: 0.648925
+[1000]	valid_set's l2: 6.33784	valid_set's r2: 0.648241
+[2000]	valid_set's l2: 6.31794	valid_set's r2: 0.649346
+[3000]	valid_set's l2: 6.31644	valid_set's r2: 0.649429
+[4000]	valid_set's l2: 6.31597	valid_set's r2: 0.649455
+[5000]	valid_set's l2: 6.31589	valid_set's r2: 0.64946
+[6000]	valid_set's l2: 6.31588	valid_set's r2: 0.64946
+[7000]	valid_set's l2: 6.31588	valid_set's r2: 0.64946
+[8000]	valid_set's l2: 6.31588	valid_set's r2: 0.64946
+[9000]	valid_set's l2: 6.31588	valid_set's r2: 0.64946
+[10000]	valid_set's l2: 6.31588	valid_set's r2: 0.64946
+R2 score for X18_mean: 0.6732
+Training model for X50_mean using AutoGluon...
+[1000]	valid_set's l2: 0.207432	valid_set's r2: 0.383602
+[2000]	valid_set's l2: 0.203232	valid_set's r2: 0.396081
+[3000]	valid_set's l2: 0.200524	valid_set's r2: 0.404128
+[4000]	valid_set's l2: 0.19931	valid_set's r2: 0.407736
+[5000]	valid_set's l2: 0.198676	valid_set's r2: 0.409621
+[6000]	valid_set's l2: 0.198088	valid_set's r2: 0.411367
+[7000]	valid_set's l2: 0.197959	valid_set's r2: 0.411751
+[8000]	valid_set's l2: 0.197763	valid_set's r2: 0.412334
+[9000]	valid_set's l2: 0.197644	valid_set's r2: 0.412686
+[10000]	valid_set's l2: 0.197609	valid_set's r2: 0.41279
+[1000]	valid_set's l2: 0.210604	valid_set's r2: 0.374175
+[2000]	valid_set's l2: 0.206366	valid_set's r2: 0.386769
+[3000]	valid_set's l2: 0.204343	valid_set's r2: 0.39278
+[4000]	valid_set's l2: 0.203477	valid_set's r2: 0.395354
+[5000]	valid_set's l2: 0.202835	valid_set's r2: 0.397261
+[6000]	valid_set's l2: 0.202722	valid_set's r2: 0.397596
+[7000]	valid_set's l2: 0.202658	valid_set's r2: 0.397787
+[8000]	valid_set's l2: 0.20261	valid_set's r2: 0.39793
+[9000]	valid_set's l2: 0.202575	valid_set's r2: 0.398033
+[10000]	valid_set's l2: 0.202566	valid_set's r2: 0.398061
+[1000]	valid_set's l2: 0.203797	valid_set's r2: 0.394404
+[2000]	valid_set's l2: 0.202189	valid_set's r2: 0.399183
+[3000]	valid_set's l2: 0.201935	valid_set's r2: 0.399936
+[4000]	valid_set's l2: 0.201884	valid_set's r2: 0.400088
+[5000]	valid_set's l2: 0.201871	valid_set's r2: 0.400125
+[6000]	valid_set's l2: 0.201868	valid_set's r2: 0.400136
+[7000]	valid_set's l2: 0.201867	valid_set's r2: 0.400139
+[8000]	valid_set's l2: 0.201867	valid_set's r2: 0.400139
+[9000]	valid_set's l2: 0.201867	valid_set's r2: 0.400139
+[10000]	valid_set's l2: 0.201867	valid_set's r2: 0.400139
+R2 score for X50_mean: 0.5142
+Training model for X26_mean using AutoGluon...
+[1000]	valid_set's l2: 2412.77	valid_set's r2: 0.367578
+[2000]	valid_set's l2: 2395.26	valid_set's r2: 0.372167
+[1000]	valid_set's l2: 2457.31	valid_set's r2: 0.355904
+[2000]	valid_set's l2: 2453.96	valid_set's r2: 0.356781
+[3000]	valid_set's l2: 2453.74	valid_set's r2: 0.356838
+[4000]	valid_set's l2: 2453.69	valid_set's r2: 0.356853
+[5000]	valid_set's l2: 2453.68	valid_set's r2: 0.356856
+[6000]	valid_set's l2: 2453.67	valid_set's r2: 0.356857
+[7000]	valid_set's l2: 2453.67	valid_set's r2: 0.356857
+[8000]	valid_set's l2: 2453.67	valid_set's r2: 0.356857
+[9000]	valid_set's l2: 2453.67	valid_set's r2: 0.356857
+[10000]	valid_set's l2: 2453.67	valid_set's r2: 0.356857
+R2 score for X26_mean: 0.3671
+Training model for X3112_mean using AutoGluon...
+[1000]	valid_set's l2: 2.95063e+06	valid_set's r2: 0.441406
+[2000]	valid_set's l2: 2.89138e+06	valid_set's r2: 0.452623
+[3000]	valid_set's l2: 2.87464e+06	valid_set's r2: 0.455792
+[4000]	valid_set's l2: 2.86649e+06	valid_set's r2: 0.457335
+[5000]	valid_set's l2: 2.86463e+06	valid_set's r2: 0.457686
+[6000]	valid_set's l2: 2.86351e+06	valid_set's r2: 0.457899
+[7000]	valid_set's l2: 2.86221e+06	valid_set's r2: 0.458145
+[8000]	valid_set's l2: 2.86131e+06	valid_set's r2: 0.458315
+[9000]	valid_set's l2: 2.86106e+06	valid_set's r2: 0.458363
+	0.4584	 = Validation score   (r2)
+	396.46s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: LightGBM ...
+	0.4486	 = Validation score   (r2)
+	457.99s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: RandomForestMSE ...
+	0.3873	 = Validation score   (r2)
+	1663.52s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: CatBoost ...
+	0.4525	 = Validation score   (r2)
+	773.54s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: ExtraTreesMSE ...
+	0.3765	 = Validation score   (r2)
+	981.27s	 = Training   runtime
+	0.16s	 = Validation runtime
+Fitting model: NeuralNetFastAI ...
+	0.4969	 = Validation score   (r2)
+	556.74s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: XGBoost ...
+	0.423	 = Validation score   (r2)
+	2209.21s	 = Training   runtime
+	0.21s	 = Validation runtime
+Fitting model: NeuralNetTorch ...
+	0.4486	 = Validation score   (r2)
+	70.55s	 = Training   runtime
+	0.55s	 = Validation runtime
+Fitting model: LightGBMLarge ...
+	0.4493	 = Validation score   (r2)
+	2100.91s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'NeuralNetFastAI': 0.529, 'KNeighborsDist': 0.176, 'NeuralNetTorch': 0.118, 'LightGBMXT': 0.059, 'CatBoost': 0.059, 'LightGBMLarge': 0.059}
+	0.5193	 = Validation score   (r2)
+	0.08s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 9237.54s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 1165.8 rows/s (2500 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("./DinoV2-with-AutoTabular-X3112_mean")
+[10000]	valid_set's l2: 2.86094e+06	valid_set's r2: 0.458386
+[1000]	valid_set's l2: 2.9598e+06	valid_set's r2: 0.43967
+[2000]	valid_set's l2: 2.93057e+06	valid_set's r2: 0.445204
+[3000]	valid_set's l2: 2.91932e+06	valid_set's r2: 0.447333
+[4000]	valid_set's l2: 2.91611e+06	valid_set's r2: 0.447941
+[5000]	valid_set's l2: 2.91473e+06	valid_set's r2: 0.448202
+[6000]	valid_set's l2: 2.9137e+06	valid_set's r2: 0.448397
+[7000]	valid_set's l2: 2.913e+06	valid_set's r2: 0.44853
+[8000]	valid_set's l2: 2.91273e+06	valid_set's r2: 0.44858
+[9000]	valid_set's l2: 2.91265e+06	valid_set's r2: 0.448595
+[10000]	valid_set's l2: 2.91253e+06	valid_set's r2: 0.448619
+[1000]	valid_set's l2: 2.91806e+06	valid_set's r2: 0.447572
+[2000]	valid_set's l2: 2.91022e+06	valid_set's r2: 0.449056
+[3000]	valid_set's l2: 2.90939e+06	valid_set's r2: 0.449213
+[4000]	valid_set's l2: 2.90906e+06	valid_set's r2: 0.449275
+[5000]	valid_set's l2: 2.90902e+06	valid_set's r2: 0.449284
+[6000]	valid_set's l2: 2.909e+06	valid_set's r2: 0.449286
+[7000]	valid_set's l2: 2.909e+06	valid_set's r2: 0.449287
+[8000]	valid_set's l2: 2.909e+06	valid_set's r2: 0.449287
+[9000]	valid_set's l2: 2.909e+06	valid_set's r2: 0.449287
+[10000]	valid_set's l2: 2.909e+06	valid_set's r2: 0.449287
+R2 score for X3112_mean: 0.5523
+Mean R2 score: 0.5468
+Submission file created.
